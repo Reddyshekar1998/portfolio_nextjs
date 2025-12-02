@@ -214,47 +214,64 @@
 //   );
 // }
 
+
+
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <main className="bg-[#121418] px-8 md:px-28 py-10 space-y-20 ">
+  const [isOpen, setIsOpen] = useState(false);
 
+  return (
+    <main className="bg-[#121418] px-8 md:px-28 py-10 space-y-20">
+      
       {/* NAVIGATION */}
       <nav className="flex justify-between items-center py-6 fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md px-6">
         <div className="text-xl font-bold text-gray-300">Kilari Reddy Sekhar</div>
 
-        {/* <ul className="hidden md:flex gap-10 text-gray-300">
-          <li className="hover:text-white cursor-pointer"><a href="#">Home</a></li>
-          <li className="hover:text-white cursor-pointer"><a href="#projects">Projects</a></li>
-          <li className="hover:text-white cursor-pointer"><a href="#skills">Skills</a></li>
-          <li className="hover:text-white cursor-pointer"><a href="#about">About</a></li>
-          <li className="hover:text-white cursor-pointer"><a href="#contact">Contact</a></li>
-        </ul> */}
-          <ul className="hidden md:flex gap-10 text-gray-300">
-            <li>
-              <Link href="#home" className="hover:text-white cursor-pointer">Home</Link>
-            </li>
-            <li>
-              <Link href="#projects" className="hover:text-white cursor-pointer">Projects</Link>
-            </li>
-            <li>
-              <Link href="#skills" className="hover:text-white cursor-pointer">Skills</Link>
-            </li>
-            <li>
-              <Link href="#about" className="hover:text-white cursor-pointer">About</Link>
-            </li>
-            <li>
-              <Link href="#contact" className="hover:text-white cursor-pointer">Contact</Link>
-            </li>
-          </ul>
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex gap-10 text-gray-300">
+          <li><Link href="#home" className="hover:text-white">Home</Link></li>
+          <li><Link href="#projects" className="hover:text-white">Projects</Link></li>
+          <li><Link href="#skills" className="hover:text-white">Skills</Link></li>
+          <li><Link href="#about" className="hover:text-white">About</Link></li>
+          <li><Link href="#contact" className="hover:text-white">Contact</Link></li>
+        </ul>
 
-        <div className="md:hidden cursor-pointer ">
-          <span className="text-2xl text-white">☰</span>
+        {/* Mobile Menu Button */}
+        <div className="md:hidden cursor-pointer" onClick={() => setIsOpen(true)}>
+          <span className="text-3xl text-white">☰</span>
         </div>
       </nav>
-      <div className="h-[10px]"> </div>"
+
+      {/* Mobile Slide-in Menu */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm">
+          <div className="absolute top-0 right-0 w-2/3 h-full bg-[#0f1115] border-l border-gray-700 p-6 transition-all">
+            
+            {/* Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-gray-300 text-2xl absolute top-5 right-6"
+            >
+              ✖
+            </button>
+
+            <ul className="flex flex-col gap-6 mt-14 text-gray-300 text-lg">
+              <li><Link href="#home" onClick={() => setIsOpen(false)}>Home</Link></li>
+              <li><Link href="#projects" onClick={() => setIsOpen(false)}>Projects</Link></li>
+              <li><Link href="#skills" onClick={() => setIsOpen(false)}>Skills</Link></li>
+              <li><Link href="#about" onClick={() => setIsOpen(false)}>About</Link></li>
+              <li><Link href="#contact" onClick={() => setIsOpen(false)}>Contact</Link></li>
+            </ul>
+          </div>
+        </div>
+      )}
+
+      <div id="home" className="h-[50px]"></div>
 
       {/* HERO */}
       <section className="text-center space-y-4 scroll-mt-28">
@@ -267,7 +284,7 @@ export default function Home() {
           <a className="hover:underline" href="https://github.com/Reddyshekar1998">GitHub</a>
           <a className="hover:underline" href="https://www.linkedin.com/in/kilari-reddy-sekhar-b309b7200/">LinkedIn</a>
           <a className="hover:underline" href="https://drive.google.com/file/d/1BdpBqyyQ24agWNpNQsbKgG0f1WV0pcrV/view?usp=sharing">Resume</a>
-          <a className="hover:underline" href="https://mailto:reddyshekar1998@gmail.com">Email</a>
+          <a className="hover:underline" href="mailto:reddyshekar1998@gmail.com">Email</a>
         </div>
       </section>
 
@@ -276,21 +293,19 @@ export default function Home() {
         <h2 className="text-3xl font-semibold mb-6 text-white">Projects</h2>
 
         <div className="grid md:grid-cols-2 gap-10">
-          
+
           {/* Project 1 */}
           <div className="bg-[#121418] rounded-2xl p-5 border border-gray-300">
             <h3 className="text-xl font-bold text-gray-100 mb-3">Voicebot AI System</h3>
-            <Image src="/man_smoke.png" alt="Underwater" width={500} height={300} className="w-[300px] h-[370px] mb-10" />
+            <Image src="/man_smoke.png" alt="Voicebot" width={500} height={300} className="w-[300px] h-[370px] mb-10" />
             <p className="text-gray-400 mt-2">
               FastAPI + React voicebot with STT → LLM → TTS pipeline.
             </p>
-
             <div className="flex gap-3 mt-4">
               <span className="px-3 py-1 bg-[#1c1f24] rounded-full text-gray-300 text-sm">FastAPI</span>
               <span className="px-3 py-1 bg-[#1c1f24] rounded-full text-gray-300 text-sm">React</span>
               <span className="px-3 py-1 bg-[#1c1f24] rounded-full text-gray-300 text-sm">LLMs</span>
             </div>
-
             <div className="mt-5 flex gap-8 text-blue-400">
               <a className="hover:underline" href="#">View Code</a>
               <a className="hover:underline" href="#">Live Demo</a>
@@ -299,17 +314,15 @@ export default function Home() {
 
           {/* Project 2 */}
           <div className="bg-[#121418] rounded-2xl p-5 border border-gray-300">
-            <h3 className="text-xl font-bold">RAG Search Engine</h3>
+            <h3 className="text-xl font-bold text-gray-100 mb-3">RAG Search Engine</h3>
             <p className="text-gray-400 mt-2">
               A production-grade RAG pipeline using vector DB + LLM.
             </p>
-
             <div className="flex gap-3 mt-4">
               <span className="px-3 py-1 bg-[#1c1f24] rounded-full text-gray-300 text-sm">FAISS</span>
               <span className="px-3 py-1 bg-[#1c1f24] rounded-full text-gray-300 text-sm">FastAPI</span>
               <span className="px-3 py-1 bg-[#1c1f24] rounded-full text-gray-300 text-sm">LLMs</span>
             </div>
-
             <div className="mt-5 flex gap-8 text-blue-400">
               <a className="hover:underline" href="#">View Code</a>
               <a className="hover:underline" href="#">Live Demo</a>
@@ -322,22 +335,21 @@ export default function Home() {
       {/* SKILLS */}
       <section id="skills" className="scroll-mt-28">
         <h2 className="text-3xl font-semibold mb-6 text-white">Skills</h2>
-
         <div className="space-y-3 text-gray-300">
           <p><b className="text-white">Programming:</b> Python, TypeScript, JavaScript, SQL</p>
-          <p><b className="text-white">Full Stack:</b> FastAPI, Django, Flask, ReactJS, NextJS, RestAPI architecture, Microservices</p>
-          <p><b className="text-white">AI/ML:</b> LLMs, RAG, LangChain, OCR, Transformers</p>
-          <p><b className="text-white">DevOps:</b> Docker, Kubernetes, CI/CD</p>
-          <p><b className="text-white">Cloud:</b> AWS, Azure, GCP</p>
+          <p><b className="text-white">Full Stack:</b> FastAPI, Django, Flask, REST API Architecture, Microservices, React.js, Next.js</p>
+          <p><b className="text-white">AI/ML:</b> LLMs, RAG Systems, LangChain/LangGraph, Deep Learning, Computer Vision, OCR, NLP, Generative AI, Model Fine-Tuning, Time Series</p>
+          <p><b className="text-white">DevOps:</b> Docker, Kubernetes, CI/CD Pipelines</p>
+          <p><b className="text-white">Cloud:</b> AWS, Azure, Google Cloud</p>
         </div>
       </section>
 
-      {/* ABOUT ME */}
+      {/* ABOUT */}
       <section id="about" className="scroll-mt-28">
         <h2 className="text-3xl font-semibold mb-6 text-white">About Me</h2>
         <p className="text-gray-300 leading-7">
-          I am a Full stack Developer and AI/ML engineer specializing in Python, FastAPI, ReactJS, NextJS, 
-          machine learning models, RAG pipelines, and scalable cloud deployments.
+          I am a Full stack Developer and AI/ML engineer specializing in Python, FastAPI,
+          ReactJS, machine learning models, RAG pipelines, and scalable cloud deployments.
         </p>
       </section>
 
@@ -346,6 +358,7 @@ export default function Home() {
         <h2 className="text-3xl font-semibold mb-6 text-white">Contact</h2>
         <p className="text-gray-300">Email: krs973867@gmail.com</p>
       </section>
+
     </main>
   );
 }
