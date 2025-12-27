@@ -11,7 +11,7 @@
 //             alt="Avatar"
 //             width={100}
 //             height={100}
-//             className="rounded-full mx-auto"
+//             className="rounded-full mx-auto"  
 //           />
 //         </div>
 //         <a href="#" className="block py-4 px-4 text-center hover:bg-gray-700">
