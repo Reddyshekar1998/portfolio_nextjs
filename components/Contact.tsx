@@ -1,10 +1,70 @@
 "use client";
-
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Linkedin, Github, Twitter, Send, MapPin, Phone } from 'lucide-react';
 import { Button, TextField } from '@mui/material';
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setStatus("");
+
+    try {
+      const response = await fetch(
+        "${process.env.NEXT_PUBLIC_API_URL}/api/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      console.log("Request body:", formData);
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus("Message sent successfully!");
+
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        setStatus("Failed to send message.");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setStatus("Server error.");
+    }
+
+    setLoading(false);
+  };
   return (
     <section id="contact" className="py-20 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,11 +174,14 @@ export default function Contact() {
             >
               <h3 className="text-2xl mb-6">Send a Message</h3>
 
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <TextField
                   fullWidth
                   label="Your Name"
                   variant="outlined"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       color: 'white',
@@ -143,6 +206,9 @@ export default function Contact() {
                   label="Email Address"
                   type="email"
                   variant="outlined"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       color: 'white',
@@ -166,6 +232,9 @@ export default function Contact() {
                   fullWidth
                   label="Subject"
                   variant="outlined"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       color: 'white',
@@ -191,6 +260,9 @@ export default function Contact() {
                   multiline
                   rows={4}
                   variant="outlined"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       color: 'white',
@@ -211,7 +283,9 @@ export default function Contact() {
                 />
 
                 <Button
+                  type="submit"
                   fullWidth
+                  disabled={loading}
                   variant="contained"
                   endIcon={<Send />}
                   sx={{
@@ -224,8 +298,13 @@ export default function Contact() {
                     }
                   }}
                 >
-                  Send Message
+                  {loading ? "Sending..." : "Send Message"}
                 </Button>
+                {status && (
+                  <p className="text-sm">
+                    {status}
+                  </p>
+                )}
               </form>
             </motion.div>
           </div>
