@@ -14,6 +14,7 @@ export default function Contact() {
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
+  console.log(process.env.NEXT_PUBLIC_API_URL);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -31,10 +32,11 @@ export default function Contact() {
 
     setLoading(true);
     setStatus("");
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    console.log("API URL:", apiUrl);
     try {
       const response = await fetch(
-        "${process.env.NEXT_PUBLIC_API_URL}/api/contact",
+        `${apiUrl}/api/contact`,
         {
           method: "POST",
           headers: {
